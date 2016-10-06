@@ -13,6 +13,25 @@ glob.sync('test/fonts/*.{woff,woff2}').forEach((name) ->
 	fonts[path.basename(name)] = fs.readFileSync(name)
 )
 
+# Font-weights
+fontWeightFiles = [
+	{ value: 100, name: "PTSerif-Hairline.woff" },
+	{ value: 100, name: "PTSerif-Thin.woff2"},
+	{ value: 200, name: "PTSerif-Ultra-Light.woff" },
+	{ value: 200, name: "PTSerif-Extra-Light.woff2" },
+	{ value: 300, name: "PTSerif-Light.woff2" }
+	{ value: 400, name: "PTSerif-Normal.woff" },
+	{ value: 400, name: "PTSerif.woff2" },
+	{ value: 500, name: "PTSerif-Medium.woff" },
+	{ value: 600, name: "PTSerif-Semi-Bold.woff" },
+	{ value: 600, name: "PTSerif-Demi-Bold.woff2" },
+	{ value: 700, name: "PTSerif-Bold.woff" },
+	{ value: 800, name: "PTSerif-Extra-Bold.woff" },
+	{ value: 800, name: "PTSerif-Ultra-Bold.woff2" },
+	{ value: 900, name: "PTSerif-Black.woff" },
+	{ value: 900, name: "PTSerif-Heavy.woff2" },
+]
+
 # Read result CSS
 expected = {}
 glob.sync('test/expected/*').forEach((name) ->
@@ -44,10 +63,9 @@ describe 'FontOptim class', ->
 
 	it 'getFontWeight', (done) ->
 		fo = new FontOptim({}, options)
-		weight = fo.getFontWeight('PTSerif-Regular.woff')
-		expect(weight).to.equals(400)
-		weight = fo.getFontWeight('PTSerif-Bold.woff2')
-		expect(weight).to.equals(600)
+		fontWeightFiles.forEach (file) ->
+			weight = fo.getFontWeight(file.name)
+			expect(file.value).to.equals(weight)
 		done()
 
 	it 'getFontStyle', (done) ->
@@ -88,7 +106,7 @@ describe 'FontOptim class', ->
 			'@font-face{'
 				'font-family:"PT Serif";'
 				'src:url(data:application/font-woff;charset=utf-8;base64,SGVsbG8gd29ybGQ=) format("woff");'
-				'font-weight:600;'
+				'font-weight:700;'
 				'font-style:normal'
 			'}'
 		].join(''))
@@ -96,7 +114,7 @@ describe 'FontOptim class', ->
 			'@font-face{'
 				'font-family:"PT Serif";'
 				'src:url(data:font/woff2;charset=utf-8;base64,SGVsbG8gd29ybGQ=) format("woff2");'
-				'font-weight:600;'
+				'font-weight:700;'
 				'font-style:normal'
 			'}'
 		].join(''))
